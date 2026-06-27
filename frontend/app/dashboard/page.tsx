@@ -1,5 +1,5 @@
 "use client";
-
+import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import {
   AlertTriangle,
   Building2,
@@ -122,36 +122,10 @@ const readiness = [
 ];
 
 export default function DashboardPage() {
-  return (
-    <main className="p-6">
-      <div className="mb-6 rounded-xl border border-[#CBD5E1] bg-white p-6 shadow-sm">
-        <div className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#B45309]">
-              City Operations Console
-            </p>
+ return (
+  <main className="p-6">
 
-            <h1 className="mt-2 text-3xl font-semibold text-[#111827]">
-              Municipal Service Delivery Overview
-            </h1>
-
-            <p className="mt-2 text-sm text-[#64748B]">
-              Unified view of incidents, infrastructure assets, departments,
-              GIS operations and service performance.
-            </p>
-          </div>
-
-          <div className="flex gap-3">
-            <button className="rounded-md bg-[#0F766E] px-5 py-3 text-sm font-semibold text-white hover:bg-[#115E59]">
-              Register Incident
-            </button>
-
-            <button className="rounded-md border border-[#CBD5E1] bg-white px-5 py-3 text-sm font-semibold text-[#111827] hover:bg-[#F8FAFC]">
-              Generate Brief
-            </button>
-          </div>
-        </div>
-      </div>
+    <DashboardHeader />
 
       <section className="mb-6 grid gap-4 md:grid-cols-4">
         {operations.map(({ label, value, meta, Icon }) => (
