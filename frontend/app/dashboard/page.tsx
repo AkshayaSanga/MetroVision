@@ -2,9 +2,6 @@
 
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import KPICard from "@/components/dashboard/KPICard";
-
-
-
 import {
   AlertTriangle,
   Building2,
@@ -16,6 +13,7 @@ import {
   ShieldCheck,
   Users,
 } from "lucide-react";
+
 import {
   Bar,
   BarChart,
