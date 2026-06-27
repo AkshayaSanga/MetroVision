@@ -12,104 +12,127 @@ export default function Login() {
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-
     setError("");
     setLoading(true);
 
     try {
-      const res = await api.post("/auth/login", {
-        email,
-        password,
-      });
+      const res = await api.post("/auth/login", { email, password });
 
       localStorage.setItem("token", res.data.access_token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
       window.location.href = "/dashboard";
     } catch (err: any) {
-      console.error("========== LOGIN ERROR ==========");
-      console.error(err);
-      console.error("API URL:", api.defaults.baseURL);
-
-      if (err.response) {
-        console.error("Status:", err.response.status);
-        console.error("Data:", err.response.data);
-
-        setError(
-          err.response.data?.detail ||
-            `Server Error (${err.response.status})`
-        );
-      } else if (err.request) {
-        console.error("No response received");
-        setError("Network Error - Backend unreachable or CORS blocked");
-      } else {
-        console.error(err.message);
-        setError(err.message);
-      }
+      setError(
+        err?.response?.data?.detail ||
+          err?.message ||
+          "Unable to sign in. Please check backend connectivity."
+      );
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <main className="grid min-h-screen place-items-center bg-slate-950 p-6 text-white">
-      <form
-        onSubmit={submit}
-        className="w-full max-w-md rounded-3xl border border-slate-800 bg-slate-900 p-8 shadow-2xl"
-      >
-        <p className="text-xs uppercase tracking-[0.3em] text-sky-400">
-          Command Center Access
-        </p>
+    <main className="grid min-h-screen bg-[#E5E7EB] text-[#111827] lg:grid-cols-[1.1fr_0.9fr]">
+      <section className="hidden bg-[#111827] p-10 text-white lg:flex lg:flex-col lg:justify-between">
+        <div>
+          <p className="text-xs uppercase tracking-[0.28em] text-[#D97706]">
+            MetroVision
+          </p>
+          <h1 className="mt-3 text-3xl font-semibold">
+            Hyderabad Municipal Operations Center
+          </h1>
+          <p className="mt-4 max-w-xl text-sm leading-7 text-slate-400">
+            Secure access for administrators, field officers and department
+            operators managing city services, incidents and public assets.
+          </p>
+        </div>
 
-        <h1 className="mt-3 text-3xl font-bold text-white">
-          MetroVision Login
-        </h1>
+        <div className="grid gap-4">
+          {[
+            ["326", "Open Incidents"],
+            ["1,284", "Assets Monitored"],
+            ["28", "Active Events"],
+            ["96.2%", "SLA Compliance"],
+          ].map(([value, label]) => (
+            <div
+              key={label}
+              className="rounded-lg border border-[#334155] bg-[#1F2937] p-4"
+            >
+              <p className="text-2xl font-semibold">{value}</p>
+              <p className="mt-1 text-sm text-slate-400">{label}</p>
+            </div>
+          ))}
+        </div>
 
-        <p className="mt-2 text-sm text-slate-400">
-          Smart City Operations Platform
-        </p>
-
-        {error && (
-          <div className="mt-5 rounded-xl border border-red-500/30 bg-red-500/10 p-3">
-            <p className="text-sm text-red-300">{error}</p>
+        <div className="rounded-lg border border-[#334155] bg-[#1F2937] p-4 text-sm text-slate-300">
+          <p className="font-semibold text-white">System Status</p>
+          <div className="mt-3 space-y-2">
+            <p>API ● Healthy</p>
+            <p>Database ● Online</p>
+            <p>GIS Layer ● Active</p>
           </div>
-        )}
+        </div>
+      </section>
 
-        <label className="mt-6 block text-sm font-semibold text-slate-300">
-          Email
-        </label>
-
-        <input
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 p-3 outline-none focus:border-sky-500"
-        />
-
-        <label className="mt-5 block text-sm font-semibold text-slate-300">
-          Password
-        </label>
-
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="mt-2 w-full rounded-xl border border-slate-700 bg-slate-950 p-3 outline-none focus:border-sky-500"
-        />
-
-        <button
-          disabled={loading}
-          className="mt-6 w-full rounded-xl bg-sky-500 p-3 font-bold text-white hover:bg-sky-400 disabled:opacity-60"
+      <section className="grid place-items-center p-6">
+        <form
+          onSubmit={submit}
+          className="w-full max-w-md rounded-xl border border-[#CBD5E1] bg-white p-8 shadow-sm"
         >
-          {loading ? "Signing In..." : "Login"}
-        </button>
+          <p className="text-xs uppercase tracking-[0.25em] text-[#B45309]">
+            Secure Operator Access
+          </p>
 
-        <Link
-          href="/register"
-          className="mt-5 block text-center text-sm text-slate-400 hover:text-sky-400"
-        >
-          Create citizen account
-        </Link>
-      </form>
+          <h2 className="mt-3 text-3xl font-semibold text-[#111827]">
+            Sign in to MetroVision
+          </h2>
+
+          <p className="mt-2 text-sm text-[#64748B]">
+            Authorized municipal operations personnel only.
+          </p>
+
+          {error && (
+            <p className="mt-5 rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+              {error}
+            </p>
+          )}
+
+          <label className="mt-6 block text-sm font-semibold text-[#334155]">
+            Email
+          </label>
+          <input
+            className="mt-2 w-full rounded-md border border-[#CBD5E1] bg-white p-3 text-[#111827] outline-none focus:border-[#0F766E]"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+          <label className="mt-5 block text-sm font-semibold text-[#334155]">
+            Password
+          </label>
+          <input
+            type="password"
+            className="mt-2 w-full rounded-md border border-[#CBD5E1] bg-white p-3 text-[#111827] outline-none focus:border-[#0F766E]"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          <button
+            disabled={loading}
+            className="mt-6 w-full rounded-md bg-[#0F766E] p-3 text-sm font-semibold text-white hover:bg-[#115E59] disabled:opacity-60"
+          >
+            {loading ? "Signing in..." : "Sign In"}
+          </button>
+
+          <Link
+            href="/register"
+            className="mt-5 block text-center text-sm text-[#64748B] hover:text-[#0F766E]"
+          >
+            Create citizen account
+          </Link>
+        </form>
+      </section>
     </main>
   );
 }
