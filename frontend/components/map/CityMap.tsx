@@ -1,80 +1,81 @@
 "use client";
 
-const zones = [
-  ["Complaints", "128", "text-sky-400"],
-  ["Assets", "1,284", "text-emerald-400"],
-  ["Alerts", "5", "text-red-400"],
-  ["Traffic Index", "72%", "text-amber-400"],
-];
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 
-const incidents = [
-  ["Road Damage", "Madhapur", "High"],
-  ["Water Leakage", "Kukatpally", "Medium"],
-  ["Streetlight Outage", "Gachibowli", "Low"],
-  ["Accident Alert", "Hitech City", "Critical"],
+const icon = new L.Icon({
+  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+});
+
+const points = [
+  { title: "Road Damage", type: "Complaint", area: "Madhapur", lat: 17.4483, lng: 78.3915 },
+  { title: "Water Leakage", type: "Complaint", area: "Kukatpally", lat: 17.4948, lng: 78.3996 },
+  { title: "Traffic Signal", type: "Asset", area: "Hitech City", lat: 17.4435, lng: 78.3772 },
+  { title: "Critical Accident", type: "Alert", area: "Gachibowli", lat: 17.4401, lng: 78.3489 },
 ];
 
 export default function CityMap() {
   return (
     <div>
-      <div className="mb-6 flex flex-col justify-between gap-4 md:flex-row md:items-center">
-        <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-sky-400">
-            GIS Command Center
-          </p>
-          <h1 className="mt-2 text-3xl font-bold text-white">
-            Hyderabad City Operations Map
-          </h1>
-          <p className="mt-2 text-sm text-slate-400">
-            Monitor complaints, public assets, alerts and active city zones.
-          </p>
-        </div>
-
-        <button className="rounded-xl bg-sky-500 px-5 py-3 text-sm font-bold text-white hover:bg-sky-400">
-          Refresh Map
-        </button>
+      <div className="mb-6 rounded-xl border border-[#CBD5E1] bg-white p-6 shadow-sm">
+        <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#B45309]">
+          Spatial Intelligence
+        </p>
+        <h1 className="mt-2 text-3xl font-semibold text-[#111827]">
+          GIS Command Center
+        </h1>
+        <p className="mt-2 text-sm text-[#64748B]">
+          Live view of complaints, assets and emergency alerts across Hyderabad.
+        </p>
       </div>
 
-      <div className="mb-6 grid gap-4 md:grid-cols-4">
-        {zones.map(([label, value, color]) => (
-          <div
-            key={label}
-            className="rounded-2xl border border-slate-800 bg-slate-900 p-5"
-          >
-            <p className="text-sm text-slate-400">{label}</p>
-            <p className={`mt-2 text-3xl font-bold ${color}`}>{value}</p>
-          </div>
-        ))}
-      </div>
-
-      <div className="grid gap-6 lg:grid-cols-4">
-        <div className="overflow-hidden rounded-3xl border border-slate-800 bg-slate-900 lg:col-span-3">
-          <iframe
-            title="MetroVision GIS Map"
-            src="https://www.openstreetmap.org/export/embed.html?bbox=78.3000%2C17.3000%2C78.6000%2C17.5500&layer=mapnik&marker=17.3850%2C78.4867"
+      <div className="grid gap-6 lg:grid-cols-[1.5fr_0.5fr]">
+        <div className="overflow-hidden rounded-xl border border-[#CBD5E1] bg-white shadow-sm">
+          <MapContainer
+            center={[17.385, 78.4867]}
+            zoom={11}
             className="h-[650px] w-full"
-          />
+          >
+            <TileLayer
+              attribution="© OpenStreetMap"
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+
+            {points.map((p) => (
+              <Marker key={p.title} position={[p.lat, p.lng]} icon={icon}>
+                <Popup>
+                  <b>{p.title}</b>
+                  <br />
+                  {p.type}
+                  <br />
+                  {p.area}
+                </Popup>
+              </Marker>
+            ))}
+          </MapContainer>
         </div>
 
-        <div className="rounded-3xl border border-slate-800 bg-slate-900 p-5">
-          <h2 className="text-lg font-bold text-white">Live Incidents</h2>
-          <p className="mt-1 text-sm text-slate-400">
-            Active field events by zone
-          </p>
+        <div className="rounded-xl border border-[#CBD5E1] bg-white p-5 shadow-sm">
+          <h2 className="text-lg font-semibold text-[#111827]">
+            Map Layers
+          </h2>
 
-          <div className="mt-5 space-y-4">
-            {incidents.map(([title, area, priority]) => (
-              <div
-                key={title}
-                className="rounded-2xl border border-slate-800 bg-slate-950 p-4"
-              >
-                <p className="font-semibold text-white">{title}</p>
-                <p className="mt-1 text-sm text-slate-400">{area}</p>
-                <p className="mt-3 text-xs font-bold text-sky-400">
-                  {priority}
-                </p>
-              </div>
-            ))}
+          <div className="mt-5 space-y-3 text-sm">
+            <p>✅ Complaints</p>
+            <p>✅ Assets</p>
+            <p>✅ Emergency Alerts</p>
+            <p>✅ Hyderabad Zones</p>
+          </div>
+
+          <div className="mt-6 rounded-lg bg-[#F8FAFC] p-4">
+            <p className="font-semibold text-[#111827]">Live Points</p>
+            <p className="mt-2 text-3xl font-semibold text-[#0F766E]">
+              {points.length}
+            </p>
           </div>
         </div>
       </div>

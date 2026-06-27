@@ -3,16 +3,16 @@
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import dynamic from "next/dynamic";
 
-const CityMap = dynamic(() => import("../../components/map/CityMap"), {
+const CityMap = dynamic(() => import("@/components/map/CityMap"), {
   ssr: false,
 });
 
 export default function MapPage() {
   return (
     <DashboardLayout>
-      <div className="p-6">
+      <main className="p-6">
         <CityMap />
-      </div>
+      </main>
     </DashboardLayout>
   );
 }
