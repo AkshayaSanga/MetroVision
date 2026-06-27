@@ -8,6 +8,48 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 
+const metrics = [
+  {
+    value: "128",
+    title: "Active Complaints",
+    Icon: FileText,
+  },
+  {
+    value: "1,284",
+    title: "City Assets",
+    Icon: Building2,
+  },
+  {
+    value: "5",
+    title: "Critical Alerts",
+    Icon: Siren,
+  },
+  {
+    value: "89%",
+    title: "SLA Compliance",
+    Icon: ShieldCheck,
+  },
+];
+
+const features = [
+  {
+    title: "Complaint Management",
+    description: "Complete citizen issue lifecycle.",
+  },
+  {
+    title: "GIS Mapping",
+    description: "Interactive infrastructure visualization.",
+  },
+  {
+    title: "Asset Monitoring",
+    description: "Roads, CCTV, streetlights and utilities.",
+  },
+  {
+    title: "Analytics",
+    description: "Operational dashboards and KPIs.",
+  },
+];
+
 export default function Home() {
   return (
     <main className="min-h-screen bg-slate-950 text-white">
@@ -16,8 +58,14 @@ export default function Home() {
           <p className="text-xs uppercase tracking-[0.3em] text-sky-400">
             Enterprise Platform
           </p>
-          <h1 className="mt-2 text-3xl font-bold">MetroVision</h1>
-          <p className="text-slate-400">Smart City Operations Platform</p>
+
+          <h1 className="mt-2 text-3xl font-bold">
+            MetroVision
+          </h1>
+
+          <p className="text-slate-400">
+            Smart City Operations Platform
+          </p>
         </div>
 
         <Link
@@ -42,8 +90,8 @@ export default function Home() {
 
           <p className="mt-8 max-w-xl text-lg leading-8 text-slate-400">
             MetroVision helps municipal corporations manage complaints,
-            infrastructure, emergency response, GIS monitoring, analytics and
-            field operations through a single platform.
+            infrastructure, emergency response, GIS monitoring,
+            analytics and field operations through one centralized platform.
           </p>
 
           <div className="mt-10 flex gap-4">
@@ -67,52 +115,59 @@ export default function Home() {
         <div className="rounded-3xl border border-slate-800 bg-slate-900 p-8 shadow-2xl">
           <div className="mb-6 flex items-center justify-between">
             <div>
-              <h3 className="text-lg font-bold">Operations Snapshot</h3>
-              <p className="text-sm text-slate-400">Hyderabad city overview</p>
+              <h3 className="text-lg font-bold">
+                Operations Snapshot
+              </h3>
+
+              <p className="text-sm text-slate-400">
+                Hyderabad City Overview
+              </p>
             </div>
+
             <span className="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-bold text-emerald-400">
-              Live
+              LIVE
             </span>
           </div>
 
           <div className="grid gap-5 sm:grid-cols-2">
-            {[
-              ["128", "Active Complaints", FileText],
-              ["1,284", "City Assets", Building2],
-              ["5", "Critical Alerts", Siren],
-              ["89%", "SLA Compliance", ShieldCheck],
-            ].map(([value, title, Icon]) => {
-              const Component = Icon as React.ElementType;
+            {metrics.map((metric) => (
+              <div
+                key={metric.title}
+                className="rounded-2xl border border-slate-800 bg-slate-950 p-6"
+              >
+                <metric.Icon
+                  size={28}
+                  className="mb-4 text-sky-400"
+                />
 
-              return (
-                <div
-                  key={title as string}
-                  className="rounded-2xl border border-slate-800 bg-slate-950 p-6"
-                >
-                  <Component className="mb-4 text-sky-400" />
-                  <p className="text-sm text-slate-400">{title}</p>
-                  <p className="mt-2 text-4xl font-bold">{value}</p>
-                </div>
-              );
-            })}
+                <p className="text-sm text-slate-400">
+                  {metric.title}
+                </p>
+
+                <p className="mt-2 text-4xl font-bold">
+                  {metric.value}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       <section className="mx-auto grid max-w-7xl gap-6 px-8 pb-20 md:grid-cols-4">
-        {[
-          ["Complaint Management", "Complete citizen issue lifecycle."],
-          ["GIS Mapping", "Interactive infrastructure visualization."],
-          ["Asset Monitoring", "Roads, CCTV, streetlights and utilities."],
-          ["Analytics", "Operational dashboards and KPIs."],
-        ].map(([title, desc]) => (
+        {features.map((feature) => (
           <div
-            key={title}
+            key={feature.title}
             className="rounded-2xl border border-slate-800 bg-slate-900 p-6"
           >
             <Map className="mb-5 text-sky-400" />
-            <h3 className="font-semibold">{title}</h3>
-            <p className="mt-3 text-sm leading-6 text-slate-400">{desc}</p>
+
+            <h3 className="font-semibold">
+              {feature.title}
+            </h3>
+
+            <p className="mt-3 text-sm leading-6 text-slate-400">
+              {feature.description}
+            </p>
           </div>
         ))}
       </section>
